@@ -8,9 +8,9 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include "myMed/ChordNode.h"
+#include "./myMed/ChordNode.h"
 #include <pthread.h>
-#include "myMed/ProtocolSingleton.h"
+#include "./myMed/ProtocolSingleton.h"
 
 using namespace std;
 
