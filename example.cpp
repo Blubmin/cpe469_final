@@ -12,6 +12,7 @@
 #include <pthread.h>
 #include "./myMed/ProtocolSingleton.h"
 #include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -21,20 +22,33 @@ string rootDir = "";
 void getFile(string fileName)
 {
 	ofstream file;
-	file.open(rootDir + "/" + fileName, ios::out | ios::trunc);
+	file.open((rootDir + "/" + fileName).c_str(), ios::out | ios::trunc);
 	
-	if (file.isOpen())
+	if (file.is_open())
 	{
-		int size = node->get(fileName + ".size");
+		int size = atoi(node->get(fileName + ".size").c_str());
 		for (int i = 0; i < size; i++)
 		{
-			string chunk = node->get(fileName + "_" + i);
-			if (chunk)
+			char num[32] = {};
+			sprintf(num, "%d", i);
+			string chunk = node->get(fileName + "_" + num);
+			if (chunk != "null")
 			{
 				file << chunk;
 			}
 		}
 		file.close();
+	}
+}
+
+void putFile(string fileName)
+{
+	ifstream file;
+	file.open(fileName.c_str());
+
+	if (file.is_open())
+	{
+
 	}
 }
 
