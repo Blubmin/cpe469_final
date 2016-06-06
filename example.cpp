@@ -11,8 +11,32 @@
 #include "./myMed/ChordNode.h"
 #include <pthread.h>
 #include "./myMed/ProtocolSingleton.h"
+#include <fstream>
 
 using namespace std;
+
+ChordNode *node = NULL;
+string rootDir = "";
+
+void getFile(string fileName)
+{
+	ofstream file;
+	file.open(rootDir + "/" + fileName, ios::out | ios::trunc);
+	
+	if (file.isOpen())
+	{
+		int size = node->get(fileName + ".size");
+		for (int i = 0; i < size; i++)
+		{
+			string chunk = node->get(fileName + "_" + i);
+			if (chunk)
+			{
+				file << chunk;
+			}
+		}
+		file.close();
+	}
+}
 
 // This application receives args, "ip", "port", "overlay identifier (unique string)", "root directory)"
 int main(int argc, char * const argv[]) 
@@ -23,11 +47,11 @@ int main(int argc, char * const argv[])
 	};
 	
     Node *chord = NULL;
-    ChordNode *node = NULL;
 
 	if (argc >= 4) {
 		// Create a test node
 		node = P_SINGLETON->initChordNode(std::string(argv[1]), atoi(argv[2]), std::string("chordTestBed"), std::string(argv[3]));
+		rootDir = argv[3];
         chord = NULL;
         
 		// join to an existing chord
