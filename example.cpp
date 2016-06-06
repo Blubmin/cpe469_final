@@ -19,7 +19,7 @@ int main(int argc, char * const argv[])
 {
 	string backBone[] = {
 			// user backbone
-            "127.0.0.1",
+            "127x01",
 	};
 	
     Node *chord = NULL;
@@ -34,7 +34,7 @@ int main(int argc, char * const argv[])
 		if (argc == 5) {
 			cout << "joining...\n";
 			int i = 0;
-		    chord = new Node(backBone[0], 8000);
+		    chord = new Node(backBone[0], 5454);
 			node->join(chord);
 		}
 
