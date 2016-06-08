@@ -72,10 +72,11 @@ void chunkFile(string fileName)
         tmpFname.append("_");
         tmpFname.append(numString);
 
-        outfile.open(tmpFname, ios::out | ios::binary | ios::app);
+        //outfile.open(tmpFname, ios::out | ios::binary | ios::app);
         memcpy((void*)tmpBuffer, (void*)&fileBuffer[buf_i], 4096);
-        outfile.write(tmpBuffer, 4096);
-        outfile.close();
+        node->put(tmpFname, tmpBuffer);
+        //outfile.write(tmpBuffer, 4096);
+        //outfile.close();
 
         length -= 4096;
         buf_i += 4096;
@@ -93,10 +94,11 @@ void chunkFile(string fileName)
         tmpFname.append("_");
         tmpFname.append(numString);
 
-        outfile.open(tmpFname, ios::out | ios::binary | ios::app);
+        //outfile.open(tmpFname, ios::out | ios::binary | ios::app);
         memcpy((void*)tmpBuffer, (void*)&fileBuffer[buf_i], length);
-        outfile.write(tmpBuffer, length);
-        outfile.close();
+        node->put(tmpFname, tmpBuffer);
+        //outfile.write(tmpBuffer, length);
+        //outfile.close();
     }
 
     delete fileBuffer;
