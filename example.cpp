@@ -13,6 +13,9 @@
 #include "./myMed/ProtocolSingleton.h"
 #include <fstream>
 #include <string>
+#include <cstdlib>
+#include <cstring>
+#include <sstream>
 
 using namespace std;
 
@@ -39,6 +42,65 @@ void getFile(string fileName)
 		}
 		file.close();
 	}
+}
+
+void chunkFile(string fileName)
+{
+    ifstream fin(fileName, ifstream::binary);
+    ofstream outfile;
+    ostringstream convert;
+    string numString;
+    string tmpFname;
+
+    fin.seekg(0, fin.end);
+    int length = fin.tellg();
+    fin.seekg(0, fin.beg);
+
+    char* fileBuffer = new char[length];
+    char* tmpBuffer = new char[4096];
+
+    int buf_i = 0, chunk_i = 0;
+
+    while (length > 4096)
+    {
+        convert.str("");
+        convert.clear();
+        convert << chunk_i;
+        numString = convert.str();
+
+        tmpFname = fileName;
+        tmpFname.append("_");
+        tmpFname.append(numString);
+
+        outfile.open(tmpFname, ios::out | ios::binary | ios::app);
+        memcpy((void*)tmpBuffer, (void*)&fileBuffer[buf_i], 4096);
+        outfile.write(tmpBuffer, 4096);
+        outfile.close();
+
+        length -= 4096;
+        buf_i += 4096;
+        chunk_i++;
+    }
+
+    if (length > 0)
+    {
+        convert.str("");
+        convert.clear();
+        convert << chunk_i;
+        numString = convert.str();
+
+        tmpFname = fileName;
+        tmpFname.append("_");
+        tmpFname.append(numString);
+
+        outfile.open(tmpFname, ios::out | ios::binary | ios::app);
+        memcpy((void*)tmpBuffer, (void*)&fileBuffer[buf_i], length);
+        outfile.write(tmpBuffer, length);
+        outfile.close();
+    }
+
+    delete fileBuffer;
+    delete tmpBuffer;
 }
 
 void putFile(string fileName)
