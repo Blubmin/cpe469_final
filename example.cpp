@@ -110,7 +110,7 @@ int chunkFile(string fileName)
 
 void putFile(string fileName)
 {
-	ifstream file(fileName.c_str());
+	ifstream file(fileName);
   if(file.good()) {
     int chunk_count = chunkFile(fileName);
     node->put(fileName + ".size", to_string(chunk_count));
