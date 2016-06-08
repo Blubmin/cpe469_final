@@ -198,7 +198,7 @@ int chunkFile(string fileName)
 
 void putFile(string fileName)
 {
-	ifstream file(fileName.c_str());
+	ifstream file(fileName);
   if(file.good()) {
     int file_size = chunkFile(fileName);
     char num[MAX_DIGITS];
