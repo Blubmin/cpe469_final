@@ -1,5 +1,6 @@
 CC = /usr/bin/g++
-CC_OPTIONS = -I.
+CC_OPTIONS = -I. -std=c++11
+CCFLAGS = -lcurl
 
 
 #if we passed ARCH=osx
