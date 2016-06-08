@@ -15,6 +15,7 @@
 #include <string>
 #include <cstdlib>
 #include <cstring>
+#include <stdexcept>
 #include <sstream>
 
 using namespace std;
@@ -44,7 +45,7 @@ void getFile(string fileName)
 	}
 }
 
-void chunkFile(string fileName)
+int chunkFile(string fileName)
 {
     ifstream fin(fileName, ifstream::binary);
     ofstream outfile;
@@ -103,17 +104,20 @@ void chunkFile(string fileName)
 
     delete fileBuffer;
     delete tmpBuffer;
+
+    return chunk_i;
 }
 
 void putFile(string fileName)
 {
-	ifstream file;
-	file.open(fileName.c_str());
+	ifstream file(fileName.c_str());
+  if(file.good()) {
+    int chunk_count = chunkFile(fileName);
+    node->put(fileName + ".size", to_string(chunk_count));
+  } else {
+    throw invalid_argument("file does not exist or could not be opened");
+  }
 
-	if (file.is_open())
-	{
-
-	}
 }
 
 // This application receives args, "ip", "port", "overlay identifier (unique string)", "root directory)"
